@@ -460,8 +460,14 @@ function openMerchModal(item) {
   // Reset form states
   const form = document.getElementById('merch-form');
   if (form) form.reset();
-  if (document.getElementById('merch-submit-success')) document.getElementById('merch-submit-success').classList.add('hidden');
-  if (document.getElementById('merch-submit-error')) document.getElementById('merch-submit-error').classList.add('hidden');
+  if (document.getElementById('merch-submit-success')) {
+    document.getElementById('merch-submit-success').classList.add('hidden');
+    document.getElementById('merch-submit-success').classList.remove('flex');
+  }
+  if (document.getElementById('merch-submit-error')) {
+    document.getElementById('merch-submit-error').classList.add('hidden');
+    document.getElementById('merch-submit-error').classList.remove('flex');
+  }
   if (document.getElementById('merch-submit-loader')) document.getElementById('merch-submit-loader').classList.add('hidden');
   if (document.getElementById('merch-submit-text')) document.getElementById('merch-submit-text').classList.remove('hidden');
   
@@ -540,7 +546,9 @@ if (merchForm) {
     submitText.classList.add('hidden');
     submitLoader.classList.remove('hidden');
     successMsg.classList.add('hidden');
+    successMsg.classList.remove('flex');
     errorMsg.classList.add('hidden');
+    errorMsg.classList.remove('flex');
     
     try {
       // Відправляємо дані на нашу серверну функцію Netlify замість прямого API Telegram
@@ -560,13 +568,16 @@ if (merchForm) {
       
       if (response.ok) {
         successMsg.classList.remove('hidden');
+        successMsg.classList.add('flex');
         merchForm.reset();
       } else {
         errorMsg.classList.remove('hidden');
+        errorMsg.classList.add('flex');
         console.error('Telegram Function error:', await response.text());
       }
     } catch (err) {
       errorMsg.classList.remove('hidden');
+      errorMsg.classList.add('flex');
       console.error('Fetch error:', err);
     } finally {
       submitText.classList.remove('hidden');
