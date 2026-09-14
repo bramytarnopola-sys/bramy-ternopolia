@@ -126,6 +126,8 @@ export default {
       fields: [
         { name: 'sectionId', title: 'ID секції (наприклад: future-events)', type: 'string' },
         { name: 'title', title: 'Заголовок', type: 'string' },
+        { name: 'emptyTitle', title: 'Заголовок, коли немає подій', type: 'string', description: 'Наприклад: "Нові події готуються"' },
+        { name: 'emptyDescription', title: 'Текст, коли немає подій', type: 'text', description: 'Наприклад: "Згодом ви тут побачите наші майбутні події..."' },
       ],
     },
     {

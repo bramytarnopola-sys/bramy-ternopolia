@@ -294,8 +294,8 @@ async function fetchSanityData() {
             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            <h3 class="text-2xl lg:text-4xl font-ermilov uppercase text-center mb-4">Нові події готуються</h3>
-            <p class="text-lg lg:text-2xl text-center opacity-70">Згодом ви тут побачите наші майбутні події. Слідкуйте за оновленнями!</p>
+            <h3 class="text-2xl lg:text-4xl font-ermilov uppercase text-center mb-4">${homepage.futureEvents?.emptyTitle || 'Нові події готуються'}</h3>
+            <p class="text-lg lg:text-2xl text-center opacity-70">${homepage.futureEvents?.emptyDescription || 'Згодом ви тут побачите наші майбутні події. Слідкуйте за оновленнями!'}</p>
           </div>
         `;
       }
