@@ -228,17 +228,26 @@ async function fetchSanityData() {
     if (projects && projects.length > 0) {
       const wrapper = document.getElementById('projects-wrapper-1');
       if (wrapper) {
-        wrapper.innerHTML = projects.map(proj => {
+        wrapper.innerHTML = projects.map((proj, index) => {
           if (proj.image) {
             return `
-              <div class="swiper-slide relative">
-                <img loading="lazy" src="${urlFor(proj.image).height(500).url()}" class="w-full h-56 lg:h-113 object-cover" alt="${proj.title || 'Project'}" />
-                <p class="text-xl lg:text-4xl font-bold absolute bottom-2 lg:bottom-7 left-2 lg:left-7 right-2 lg:right-7 drop-shadow-md">${proj.title || ''}</p>
+              <div class="swiper-slide relative cursor-pointer project-slide" data-index="${index}">
+                <img loading="lazy" src="${urlFor(proj.image).height(500).url()}" class="w-full h-56 lg:h-113 object-cover transition-transform duration-300 hover:scale-105" alt="${proj.title || 'Project'}" />
+                <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
+                <p class="text-xl lg:text-4xl font-bold absolute bottom-2 lg:bottom-7 left-2 lg:left-7 right-2 lg:right-7 drop-shadow-md text-white">${proj.title || ''}</p>
               </div>
             `;
           }
           return '';
         }).join('');
+
+        // Add click listeners to open modal
+        document.querySelectorAll('.project-slide').forEach(slide => {
+          slide.addEventListener('click', () => {
+            const idx = slide.getAttribute('data-index');
+            openProjectModal(projects[idx]);
+          });
+        });
       }
     }
 
@@ -323,10 +332,97 @@ async function fetchSanityData() {
     initMapMarkers();
     
   } catch (error) {
-    console.error("Помилка при завантаженні даних з Sanity:", error);
-    initSliders();
-    initMapMarkers(); // Відмалювати хоча б пусту мапу
+    console.error('Error fetching event data:', error);
   }
+}
+
+let modalGallerySwiper = null;
+
+function openProjectModal(project) {
+  const modal = document.getElementById('project-modal');
+  const title = document.getElementById('project-modal-title');
+  const desc = document.getElementById('project-modal-desc');
+  const galleryWrapper = document.getElementById('project-modal-gallery');
+  
+  if (!modal) return;
+
+  title.textContent = project.title || '';
+  desc.textContent = project.description || '';
+  
+  // Build gallery (main image + gallery images)
+  let images = [];
+  if (project.image) images.push(project.image);
+  if (project.gallery && Array.isArray(project.gallery)) {
+    images = images.concat(project.gallery);
+  }
+  
+  galleryWrapper.innerHTML = images.map(img => `
+    <div class="swiper-slide w-full h-full">
+      <img loading="lazy" src="${urlFor(img).height(800).url()}" class="w-full h-full object-cover" alt="${project.title || 'Project Image'}">
+    </div>
+  `).join('');
+  
+  // Initialize or update swiper
+  if (modalGallerySwiper) {
+    modalGallerySwiper.destroy(true, true);
+  }
+  
+  // Use Swiper global if available
+  if (typeof Swiper !== 'undefined') {
+    modalGallerySwiper = new Swiper('.modalGallerySlider', {
+      loop: images.length > 1,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  }
+  
+  // Show modal
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  // trigger reflow
+  void modal.offsetWidth;
+  modal.classList.remove('opacity-0');
+  modal.classList.add('opacity-100');
+  
+  const content = document.getElementById('project-modal-content');
+  content.classList.remove('scale-95');
+  content.classList.add('scale-100');
+  
+  document.body.classList.add('overflow-hidden');
+}
+
+// Setup close modal listeners
+const modal = document.getElementById('project-modal');
+const closeBtn = document.getElementById('project-modal-close');
+
+const closeModal = () => {
+  if (!modal) return;
+  modal.classList.remove('opacity-100');
+  modal.classList.add('opacity-0');
+  const content = document.getElementById('project-modal-content');
+  if (content) {
+    content.classList.remove('scale-100');
+    content.classList.add('scale-95');
+  }
+  
+  setTimeout(() => {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.classList.remove('overflow-hidden');
+  }, 300);
+};
+
+if (closeBtn) closeBtn.addEventListener('click', closeModal);
+if (modal) {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
 }
 
 function initSliders() {

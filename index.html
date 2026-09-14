@@ -812,6 +812,34 @@
       </div>
     </footer>
 
+    <!-- Project Modal -->
+    <div id="project-modal" class="fixed inset-0 z-100 hidden items-center justify-center p-4 md:p-10 transition-opacity duration-300 opacity-0 bg-black/80">
+      <div id="project-modal-content" class="bg-[#EAE8E4] w-full max-w-5xl max-h-[90vh] rounded-2xl flex flex-col md:flex-row overflow-hidden relative transform scale-95 transition-transform duration-300">
+        <!-- Close button -->
+        <button id="project-modal-close" class="absolute top-4 right-4 z-10 w-10 h-10 cursor-pointer bg-white/50 hover:bg-white rounded-full flex items-center justify-center transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+
+        <!-- Gallery Section -->
+        <div class="w-full md:w-1/2 h-72 md:h-auto bg-gray-300 relative">
+          <div class="swiper modalGallerySlider w-full h-full">
+            <div id="project-modal-gallery" class="swiper-wrapper">
+              <!-- Slides injected via JS -->
+            </div>
+            <div class="swiper-pagination bottom-2!"></div>
+            <div class="swiper-button-prev text-white! after:text-xl! w-8! h-8! bg-black/20! rounded-full"></div>
+            <div class="swiper-button-next text-white! after:text-xl! w-8! h-8! bg-black/20! rounded-full"></div>
+          </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="w-full md:w-1/2 p-6 md:p-10 overflow-y-auto">
+          <h3 id="project-modal-title" class="text-3xl md:text-4xl font-ermilov uppercase mb-6"></h3>
+          <div id="project-modal-desc" class="text-lg space-y-4 whitespace-pre-wrap leading-relaxed"></div>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script type="module" src="script.js"></script>

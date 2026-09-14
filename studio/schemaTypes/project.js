@@ -16,5 +16,18 @@ export default {
       options: { hotspot: true },
       validation: Rule => Rule.required()
     },
+    {
+      name: 'description',
+      title: 'Опис проєкту',
+      type: 'text',
+      description: 'Детальний опис робіт та історії (звичайний текст)'
+    },
+    {
+      name: 'gallery',
+      title: 'Галерея фотографій',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      description: 'Додаткові фото для поп-апу'
+    },
   ],
 }
