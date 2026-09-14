@@ -293,16 +293,25 @@ async function fetchSanityData() {
     if (merchItems && merchItems.length > 0) {
       const wrapper = document.getElementById('merch-wrapper');
       if (wrapper) {
-        wrapper.innerHTML = merchItems.map(item => {
+        wrapper.innerHTML = merchItems.map((item, index) => {
           if (item.image) {
             return `
-              <div class="swiper-slide relative">
-                <img loading="lazy" src="${urlFor(item.image).height(500).url()}" class="md:w-full h-auto lg:h-123 lg:object-cover" alt="${item.title || 'merch'}" />
+              <div class="swiper-slide relative cursor-pointer merch-slide" data-index="${index}">
+                <img loading="lazy" src="${urlFor(item.image).height(500).url()}" class="md:w-full h-auto lg:h-123 lg:object-cover transition-transform duration-300 hover:scale-105" alt="${item.title || 'merch'}" />
+                ${item.title ? `<div class="absolute inset-0 bg-black/20 pointer-events-none"></div><p class="text-xl lg:text-3xl font-bold absolute bottom-2 lg:bottom-7 left-2 lg:left-7 right-2 lg:right-7 drop-shadow-md text-white pointer-events-none">${item.title}</p>` : ''}
               </div>
             `;
           }
           return '';
         }).join('');
+
+        // Add click listeners to open merch modal
+        document.querySelectorAll('.merch-slide').forEach(slide => {
+          slide.addEventListener('click', () => {
+            const idx = slide.getAttribute('data-index');
+            openMerchModal(merchItems[idx]);
+          });
+        });
       }
     }
 
@@ -397,9 +406,149 @@ function openProjectModal(project) {
   document.body.classList.add('overflow-hidden');
 }
 
+let merchGallerySwiper = null;
+
+function openMerchModal(item) {
+  const modal = document.getElementById('merch-modal');
+  const title = document.getElementById('merch-modal-title');
+  const price = document.getElementById('merch-modal-price');
+  const desc = document.getElementById('merch-modal-desc');
+  const galleryWrapper = document.getElementById('merch-modal-gallery');
+  const formTitle = document.getElementById('merch-form-title');
+  
+  if (!modal) return;
+
+  title.textContent = item.title || '';
+  price.textContent = item.price || '';
+  desc.textContent = item.description || '';
+  if (formTitle) formTitle.value = item.title || 'Мерч без назви';
+  
+  // Build gallery (main image + gallery images)
+  let images = [];
+  if (item.image) images.push(item.image);
+  if (item.gallery && Array.isArray(item.gallery)) {
+    images = images.concat(item.gallery);
+  }
+  
+  if (galleryWrapper) {
+    galleryWrapper.innerHTML = images.map(img => `
+      <div class="swiper-slide w-full h-full">
+        <img loading="lazy" src="${urlFor(img).height(800).url()}" class="w-full h-full object-cover" alt="${item.title || 'Merch'}">
+      </div>
+    `).join('');
+  }
+  
+  // Initialize or update swiper
+  if (merchGallerySwiper) {
+    merchGallerySwiper.destroy(true, true);
+  }
+  
+  if (typeof Swiper !== 'undefined') {
+    merchGallerySwiper = new Swiper('.merchGallerySlider', {
+      loop: images.length > 1,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  }
+  
+  // Reset form states
+  const form = document.getElementById('merch-form');
+  if (form) form.reset();
+  if (document.getElementById('merch-submit-success')) document.getElementById('merch-submit-success').classList.add('hidden');
+  if (document.getElementById('merch-submit-error')) document.getElementById('merch-submit-error').classList.add('hidden');
+  if (document.getElementById('merch-submit-loader')) document.getElementById('merch-submit-loader').classList.add('hidden');
+  if (document.getElementById('merch-submit-text')) document.getElementById('merch-submit-text').classList.remove('hidden');
+  
+  // Show modal
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  // trigger reflow
+  void modal.offsetWidth;
+  modal.classList.remove('opacity-0');
+  modal.classList.add('opacity-100');
+  
+  const content = document.getElementById('merch-modal-content');
+  if (content) {
+    content.classList.remove('scale-95');
+    content.classList.add('scale-100');
+  }
+  
+  document.body.classList.add('overflow-hidden');
+}
+
+// Telegram form submission logic
+const merchForm = document.getElementById('merch-form');
+if (merchForm) {
+  merchForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const botToken = '8834248595:AAFJPpHNJZlVJjillH-1WyXO6Kss3m6pd_Q';
+    const chatId = '258699704';
+    
+    const itemName = document.getElementById('merch-form-title').value;
+    const name = document.getElementById('merch-name').value;
+    const phone = document.getElementById('merch-phone').value;
+    const email = document.getElementById('merch-email').value;
+    const comment = document.getElementById('merch-comment').value;
+    
+    const text = `🛍 **Нове замовлення мерчу!**\n\n` +
+                 `📦 **Товар:** ${itemName}\n` +
+                 `👤 **Ім'я:** ${name}\n` +
+                 `📞 **Телефон:** ${phone}\n` +
+                 `📧 **Email:** ${email ? email : 'Не вказано'}\n` +
+                 `💬 **Коментар:**\n${comment ? comment : 'Не вказано'}`;
+                 
+    const submitText = document.getElementById('merch-submit-text');
+    const submitLoader = document.getElementById('merch-submit-loader');
+    const successMsg = document.getElementById('merch-submit-success');
+    const errorMsg = document.getElementById('merch-submit-error');
+    
+    submitText.classList.add('hidden');
+    submitLoader.classList.remove('hidden');
+    successMsg.classList.add('hidden');
+    errorMsg.classList.add('hidden');
+    
+    try {
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: text,
+          parse_mode: 'Markdown'
+        })
+      });
+      
+      if (response.ok) {
+        successMsg.classList.remove('hidden');
+        merchForm.reset();
+      } else {
+        errorMsg.classList.remove('hidden');
+        console.error('Telegram API error:', await response.text());
+      }
+    } catch (err) {
+      errorMsg.classList.remove('hidden');
+      console.error('Fetch error:', err);
+    } finally {
+      submitText.classList.remove('hidden');
+      submitLoader.classList.add('hidden');
+    }
+  });
+}
+
 // Setup close modal listeners
 const modal = document.getElementById('project-modal');
 const closeBtn = document.getElementById('project-modal-close');
+const merchModalObj = document.getElementById('merch-modal');
+const merchCloseBtn = document.getElementById('merch-modal-close');
 
 const closeModal = () => {
   if (!modal) return;
@@ -414,7 +563,28 @@ const closeModal = () => {
   setTimeout(() => {
     modal.classList.add('hidden');
     modal.classList.remove('flex');
-    document.body.classList.remove('overflow-hidden');
+    if (!merchModalObj || merchModalObj.classList.contains('hidden')) {
+      document.body.classList.remove('overflow-hidden');
+    }
+  }, 300);
+};
+
+const closeMerchModal = () => {
+  if (!merchModalObj) return;
+  merchModalObj.classList.remove('opacity-100');
+  merchModalObj.classList.add('opacity-0');
+  const content = document.getElementById('merch-modal-content');
+  if (content) {
+    content.classList.remove('scale-100');
+    content.classList.add('scale-95');
+  }
+  
+  setTimeout(() => {
+    merchModalObj.classList.add('hidden');
+    merchModalObj.classList.remove('flex');
+    if (!modal || modal.classList.contains('hidden')) {
+      document.body.classList.remove('overflow-hidden');
+    }
   }, 300);
 };
 
@@ -422,6 +592,13 @@ if (closeBtn) closeBtn.addEventListener('click', closeModal);
 if (modal) {
   modal.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
+  });
+}
+
+if (merchCloseBtn) merchCloseBtn.addEventListener('click', closeMerchModal);
+if (merchModalObj) {
+  merchModalObj.addEventListener('click', (e) => {
+    if (e.target === merchModalObj) closeMerchModal();
   });
 }
 

@@ -15,6 +15,31 @@ export default {
       title: 'Порядок сортування',
       type: 'number',
       description: 'Менше число — відображається першим',
+    },
+    {
+      name: 'title',
+      title: 'Назва товару',
+      type: 'string',
+      validation: Rule => Rule.required(),
+    },
+    {
+      name: 'description',
+      title: 'Опис товару',
+      type: 'text',
+      description: 'Склад, розміри, деталі',
+    },
+    {
+      name: 'price',
+      title: 'Ціна',
+      type: 'string',
+      description: 'Наприклад: "500 грн"',
+    },
+    {
+      name: 'gallery',
+      title: 'Галерея фотографій',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      description: 'Додаткові фото для поп-апу',
     }
   ],
   preview: {

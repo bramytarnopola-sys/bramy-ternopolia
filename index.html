@@ -840,6 +840,71 @@
       </div>
     </div>
 
+    <!-- Merch Modal -->
+    <div id="merch-modal" class="fixed inset-0 z-100 hidden items-center justify-center p-4 md:p-10 transition-opacity duration-300 opacity-0 bg-black/80">
+      <div id="merch-modal-content" class="bg-[#EAE8E4] w-full max-w-6xl max-h-[90vh] rounded-2xl flex flex-col md:flex-row overflow-hidden relative transform scale-95 transition-transform duration-300">
+        <!-- Close button -->
+        <button id="merch-modal-close" class="absolute top-4 right-4 z-10 w-10 h-10 cursor-pointer bg-white/50 hover:bg-white rounded-full flex items-center justify-center transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+
+        <!-- Gallery Section -->
+        <div class="w-full md:w-1/2 h-72 md:h-auto bg-gray-300 relative">
+          <div class="swiper merchGallerySlider w-full h-full">
+            <div id="merch-modal-gallery" class="swiper-wrapper">
+              <!-- Slides injected via JS -->
+            </div>
+            <div class="swiper-pagination bottom-2!"></div>
+            <div class="swiper-button-prev text-white! after:text-xl! w-8! h-8! bg-black/20! rounded-full"></div>
+            <div class="swiper-button-next text-white! after:text-xl! w-8! h-8! bg-black/20! rounded-full"></div>
+          </div>
+        </div>
+
+        <!-- Info & Form Section -->
+        <div class="w-full md:w-1/2 p-6 md:p-10 overflow-y-auto flex flex-col">
+          <h3 id="merch-modal-title" class="text-3xl md:text-4xl font-ermilov uppercase mb-2"></h3>
+          <p id="merch-modal-price" class="text-xl font-bold mb-4 text-gray-700"></p>
+          <div id="merch-modal-desc" class="text-base space-y-4 whitespace-pre-wrap leading-relaxed mb-8"></div>
+          
+          <div class="mt-auto border-t border-gray-300 pt-6">
+            <h4 class="text-2xl font-ermilov uppercase mb-4">Замовити</h4>
+            <form id="merch-form" class="space-y-4">
+              <input type="hidden" id="merch-form-title" name="item_title" value="">
+              
+              <div>
+                <label for="merch-name" class="block text-sm font-medium text-gray-700 mb-1">Ім'я *</label>
+                <input type="text" id="merch-name" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black outline-none transition-shadow bg-white">
+              </div>
+              
+              <div class="flex flex-col sm:flex-row gap-4">
+                <div class="w-full sm:w-1/2">
+                  <label for="merch-phone" class="block text-sm font-medium text-gray-700 mb-1">Телефон *</label>
+                  <input type="tel" id="merch-phone" required placeholder="+380..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black outline-none transition-shadow bg-white">
+                </div>
+                <div class="w-full sm:w-1/2">
+                  <label for="merch-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <input type="email" id="merch-email" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black outline-none transition-shadow bg-white">
+                </div>
+              </div>
+              
+              <div>
+                <label for="merch-comment" class="block text-sm font-medium text-gray-700 mb-1">Коментар (Розмір, колір тощо)</label>
+                <textarea id="merch-comment" rows="3" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black outline-none transition-shadow bg-white"></textarea>
+              </div>
+              
+              <button type="submit" class="w-full bg-black text-white font-bold py-3 px-6 rounded-full hover:bg-gray-800 transition-colors uppercase tracking-wide flex justify-center items-center gap-2">
+                <span id="merch-submit-text">Відправити замовлення</span>
+                <div id="merch-submit-loader" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              </button>
+              
+              <div id="merch-submit-success" class="hidden text-green-600 text-center font-medium mt-2">Замовлення успішно відправлено! Ми з вами зв'яжемося.</div>
+              <div id="merch-submit-error" class="hidden text-red-600 text-center font-medium mt-2">Сталася помилка. Спробуйте пізніше або напишіть нам в Instagram.</div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script type="module" src="script.js"></script>
