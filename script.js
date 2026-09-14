@@ -488,12 +488,6 @@ if (merchForm) {
   merchForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // Розбиваємо токен на частини, щоб GitHub не сварився на "відкритий ключ"
-    const botTokenPart1 = '8834248595';
-    const botTokenPart2 = 'AAFJPpHNJZlVJjillH-1WyXO6Kss3m6pd_Q';
-    const botToken = `${botTokenPart1}:${botTokenPart2}`;
-    const chatId = '258699704';
-    
     const nameInput = document.getElementById('merch-name');
     const phoneInput = document.getElementById('merch-phone');
     const emailInput = document.getElementById('merch-email');
@@ -538,13 +532,6 @@ if (merchForm) {
     
     if (hasError) return;
     
-    const text = `🛍 **Нове замовлення мерчу!**\n\n` +
-                 `📦 **Товар:** ${itemName}\n` +
-                 `👤 **Ім'я:** ${name}\n` +
-                 `📞 **Телефон:** ${phone}\n` +
-                 `📧 **Email:** ${email ? email : 'Не вказано'}\n` +
-                 `💬 **Коментар:**\n${comment ? comment : 'Не вказано'}`;
-                 
     const submitText = document.getElementById('merch-submit-text');
     const submitLoader = document.getElementById('merch-submit-loader');
     const successMsg = document.getElementById('merch-submit-success');
@@ -556,15 +543,18 @@ if (merchForm) {
     errorMsg.classList.add('hidden');
     
     try {
-      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      // Відправляємо дані на нашу серверну функцію Netlify замість прямого API Telegram
+      const response = await fetch('/.netlify/functions/telegram', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          chat_id: chatId,
-          text: text,
-          parse_mode: 'Markdown'
+          itemName,
+          name,
+          phone,
+          email,
+          comment
         })
       });
       
@@ -573,7 +563,7 @@ if (merchForm) {
         merchForm.reset();
       } else {
         errorMsg.classList.remove('hidden');
-        console.error('Telegram API error:', await response.text());
+        console.error('Telegram Function error:', await response.text());
       }
     } catch (err) {
       errorMsg.classList.remove('hidden');
