@@ -864,26 +864,29 @@
         <div class="w-full md:w-1/2 p-6 md:p-10 overflow-y-auto flex flex-col">
           <h3 id="merch-modal-title" class="text-3xl md:text-4xl font-ermilov uppercase mb-2"></h3>
           <p id="merch-modal-price" class="text-xl font-bold mb-4 text-gray-700"></p>
-          <div id="merch-modal-desc" class="text-base space-y-4 whitespace-pre-wrap leading-relaxed mb-8"></div>
+          <div id="merch-modal-desc" class="text-base space-y-4 whitespace-pre-wrap leading-relaxed mb-4"></div>
           
-          <div class="mt-auto border-t border-gray-300 pt-6">
+          <div class="border-t border-gray-300 pt-4 mt-2">
             <h4 class="text-2xl font-ermilov uppercase mb-4">Замовити</h4>
             <form id="merch-form" class="space-y-4">
               <input type="hidden" id="merch-form-title" name="item_title" value="">
               
               <div>
                 <label for="merch-name" class="block text-sm font-medium text-gray-700 mb-1">Ім'я *</label>
-                <input type="text" id="merch-name" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black outline-none transition-shadow bg-white">
+                <input type="text" id="merch-name" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black outline-none transition-shadow bg-white">
+                <p id="merch-name-error" class="hidden text-red-500 text-xs mt-1">Будь ласка, введіть ваше ім'я.</p>
               </div>
               
               <div class="flex flex-col sm:flex-row gap-4">
                 <div class="w-full sm:w-1/2">
                   <label for="merch-phone" class="block text-sm font-medium text-gray-700 mb-1">Телефон *</label>
-                  <input type="tel" id="merch-phone" required placeholder="+380..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black outline-none transition-shadow bg-white">
+                  <input type="tel" id="merch-phone" placeholder="+380991234567" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black outline-none transition-shadow bg-white">
+                  <p id="merch-phone-error" class="hidden text-red-500 text-xs mt-1">Будь ласка, введіть коректний номер.</p>
                 </div>
                 <div class="w-full sm:w-1/2">
-                  <label for="merch-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <label for="merch-email" class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
                   <input type="email" id="merch-email" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black outline-none transition-shadow bg-white">
+                  <p id="merch-email-error" class="hidden text-red-500 text-xs mt-1">Будь ласка, введіть коректний email.</p>
                 </div>
               </div>
               
@@ -897,8 +900,19 @@
                 <div id="merch-submit-loader" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               </button>
               
-              <div id="merch-submit-success" class="hidden text-green-600 text-center font-medium mt-2">Замовлення успішно відправлено! Ми з вами зв'яжемося.</div>
-              <div id="merch-submit-error" class="hidden text-red-600 text-center font-medium mt-2">Сталася помилка. Спробуйте пізніше або напишіть нам в Instagram.</div>
+              <div id="merch-submit-success" class="hidden flex items-center gap-3 bg-green-50 border border-green-200 text-green-800 p-4 rounded-xl mt-4 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="font-medium">Дякуємо! Ваше замовлення успішно прийнято. Ми скоро зв'яжемось з вами. 🎉</span>
+              </div>
+              
+              <div id="merch-submit-error" class="hidden flex items-center gap-3 bg-red-50 border border-red-200 text-red-800 p-4 rounded-xl mt-4 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="font-medium">Ой! Щось пішло не так. Будь ласка, спробуйте пізніше або напишіть нам в Instagram.</span>
+              </div>
             </form>
           </div>
         </div>
