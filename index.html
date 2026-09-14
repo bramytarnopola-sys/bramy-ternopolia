@@ -36,9 +36,6 @@
     />
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"></noscript>
 
-    <!-- Попереднє завантаження головного зображення для покращення LCP (швидкості) -->
-    <link rel="preload" as="image" href="images/tarnopol-001.webp" />
-
     <link rel="stylesheet" href="css/input.css" />
   </head>
 
@@ -748,7 +745,7 @@
           class="flex flex-col md:flex-row justify-between md:items-center gap-5"
         >
           <a href="#" class="w-fit">
-            <img loading="lazy" id="footer-logo" src="images/icons/icon.svg" alt="logo" class="h-9 w-auto object-contain" />
+            <img loading="lazy" id="footer-logo" src="images/icons/icon.svg" alt="logo" width="200" height="36" class="h-9 w-auto object-contain" />
           </a>
           <div
             class="md:w-1/2 flex flex-col md:flex-row gap-2.5 md:gap-11 md:items-center"
@@ -762,7 +759,7 @@
                 rel="noopener noreferrer"
                 class="hover:opacity-70 transition-all"
               >
-                <img loading="lazy" id="footer-fb-icon" src="images/icons/fb.svg" alt="fb" class="w-12 h-12" />
+                <img loading="lazy" id="footer-fb-icon" src="images/icons/fb.svg" alt="fb" width="48" height="48" class="w-12 h-12" />
               </a>
               <a
                 id="footer-yt"
@@ -775,6 +772,7 @@
                   id="footer-yt-icon"
                   src="images/icons/youtube.svg"
                   alt="youtube"
+                  width="48" height="48"
                   class="w-12 h-12"
                 />
               </a>
@@ -789,6 +787,7 @@
                   id="footer-ig-icon"
                   src="images/icons/insta.svg"
                   alt="insta"
+                  width="48" height="48"
                   class="w-12 h-12"
                 />
               </a>
