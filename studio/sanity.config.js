@@ -21,7 +21,7 @@ export default defineConfig({
             S.documentTypeListItem('project').title('Наші проєкти'),
             S.documentTypeListItem('futureEvent').title('Майбутні події'),
             S.documentTypeListItem('merchItem').title('Наш мерч'),
-            S.documentTypeListItem('mapPoint').title('Точки на мапі'),
+
           ]),
     }),
     visionTool()
