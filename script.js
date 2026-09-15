@@ -1,12 +1,11 @@
 import { client, urlFor } from './sanity.js';
 
-let mapData = [];
+
 
 async function fetchSanityData() {
   try {
     const homepage = await client.fetch(`*[_type == "homepage"][0]`);
     const projects = await client.fetch(`*[_type == "project"] | order(_createdAt asc)`);
-    const mapPoints = await client.fetch(`*[_type == "mapPoint"] | order(id asc)`);
     const instagramPosts = await client.fetch(`*[_type == "instagramPost"] | order(order asc, _createdAt desc)[0...10]`);
     if (homepage) {
       if (homepage.header) {
@@ -327,30 +326,7 @@ async function fetchSanityData() {
       }
     }
 
-    if (mapPoints && mapPoints.length > 0) {
-      mapData = mapPoints.map(point => {
-        let lat = 0, lng = 0;
-        if (point.coordinates) {
-          const parts = point.coordinates.split(',');
-          if (parts.length >= 2) {
-            lat = parseFloat(parts[0].trim());
-            lng = parseFloat(parts[1].trim());
-          }
-        }
-        return {
-          id: point.id,
-          title: point.title || '',
-          coords: [lat, lng],
-          desc: point.desc || '',
-          vitrazh: point.vitrazh || '',
-          photo: point.photoAuthors || [],
-          images: point.images ? point.images.map(img => urlFor(img).height(600).url()) : []
-        };
-      });
-    }
-    
     initSliders();
-    initMapMarkers();
     
   } catch (error) {
     console.error('Error fetching event data:', error);
