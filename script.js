@@ -11,11 +11,11 @@ async function fetchSanityData() {
       if (homepage.header) {
         if (homepage.header.logoDesktop) {
           const dLogo = document.getElementById('header-logo-desktop');
-          if (dLogo) dLogo.src = urlFor(homepage.header.logoDesktop).width(300).url();
+          if (dLogo) dLogo.src = urlFor(homepage.header.logoDesktop).url();
         }
         if (homepage.header.logoMobile) {
           const mLogo = document.getElementById('header-logo-mobile');
-          if (mLogo) mLogo.src = urlFor(homepage.header.logoMobile).width(100).url();
+          if (mLogo) mLogo.src = urlFor(homepage.header.logoMobile).url();
         }
         
         // Dynamic Navigation links
