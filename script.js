@@ -132,16 +132,16 @@ async function fetchSanityData() {
           const g = homepage.events.gallery;
           document.getElementById('events-gallery').innerHTML = `
             <div class="flex flex-col gap-4 md:gap-6 h-112.5 md:h-175 lg:h-200">
-              <div class="h-[45%] w-full"><img loading="lazy" src="${urlFor(g[0]).height(400).url()}" class="w-full h-full object-cover" alt="event" /></div>
-              <div class="h-[55%] w-full"><img loading="lazy" src="${urlFor(g[1]).height(500).url()}" class="w-full h-full object-cover" alt="event" /></div>
+              <div class="h-[45%] w-full"><img loading="lazy" src="${urlFor(g[0]).height(800).format('webp').url()}" class="w-full h-full object-cover" alt="event" /></div>
+              <div class="h-[55%] w-full"><img loading="lazy" src="${urlFor(g[1]).height(1000).format('webp').url()}" class="w-full h-full object-cover" alt="event" /></div>
             </div>
             <div class="flex flex-col gap-4 md:gap-6 h-112.5 md:h-175 lg:h-200">
-              <div class="h-[55%] w-full"><img loading="lazy" src="${urlFor(g[2]).height(500).url()}" class="w-full h-full object-cover" alt="event" /></div>
-              <div class="h-[45%] w-full"><img loading="lazy" src="${urlFor(g[3]).height(400).url()}" class="w-full h-full object-cover" alt="event" /></div>
+              <div class="h-[55%] w-full"><img loading="lazy" src="${urlFor(g[2]).height(1000).format('webp').url()}" class="w-full h-full object-cover" alt="event" /></div>
+              <div class="h-[45%] w-full"><img loading="lazy" src="${urlFor(g[3]).height(800).format('webp').url()}" class="w-full h-full object-cover" alt="event" /></div>
             </div>
             <div class="col-span-2 md:col-span-1 flex flex-row md:flex-col gap-4 md:gap-6 h-62.5 md:h-175 lg:h-200">
-              <div class="w-1/2 md:w-full h-full md:h-[45%]"><img loading="lazy" src="${urlFor(g[4]).height(400).url()}" class="w-full h-full object-cover" alt="event" /></div>
-              <div class="w-1/2 md:w-full h-full md:h-[55%]"><img loading="lazy" src="${urlFor(g[5]).height(500).url()}" class="w-full h-full object-cover" alt="event" /></div>
+              <div class="w-1/2 md:w-full h-full md:h-[45%]"><img loading="lazy" src="${urlFor(g[4]).height(800).format('webp').url()}" class="w-full h-full object-cover" alt="event" /></div>
+              <div class="w-1/2 md:w-full h-full md:h-[55%]"><img loading="lazy" src="${urlFor(g[5]).height(1000).format('webp').url()}" class="w-full h-full object-cover" alt="event" /></div>
             </div>
           `;
         }
@@ -231,7 +231,7 @@ async function fetchSanityData() {
           if (proj.image) {
             return `
               <div class="swiper-slide relative cursor-pointer project-slide" data-index="${index}">
-                <img loading="lazy" src="${urlFor(proj.image).height(500).url()}" class="w-full h-56 lg:h-113 object-cover transition-transform duration-300 hover:scale-105" alt="${proj.title || 'Project'}" />
+                <img loading="lazy" src="${urlFor(proj.image).height(1000).format('webp').url()}" class="w-full h-56 lg:h-113 object-cover transition-transform duration-300 hover:scale-105" alt="${proj.title || 'Project'}" />
                 <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
                 <p class="text-xl lg:text-4xl font-bold absolute bottom-2 lg:bottom-7 left-2 lg:left-7 right-2 lg:right-7 drop-shadow-md text-white">${proj.title || ''}</p>
               </div>
@@ -258,7 +258,7 @@ async function fetchSanityData() {
             return `
               <div class="swiper-slide w-[288px]!">
                 <a href="${post.link || '#'}" target="_blank" class="block w-full h-full">
-                  <img loading="lazy" src="${urlFor(post.image).height(400).url()}" alt="${post.title || 'Instagram'}" class="w-full h-90.5 object-cover" />
+                  <img loading="lazy" src="${urlFor(post.image).height(800).format('webp').url()}" alt="${post.title || 'Instagram'}" class="w-full h-90.5 object-cover" />
                 </a>
               </div>
             `;
@@ -275,7 +275,7 @@ async function fetchSanityData() {
         wrapper.innerHTML = futureEventDocs.map(slide => `
           <div class="swiper-slide">
             <div class="relative">
-              <img loading="lazy" src="${slide.image ? urlFor(slide.image).height(400).url() : ''}" class="w-full h-48 lg:h-93 object-cover" alt="event slide" />
+              <img loading="lazy" src="${slide.image ? urlFor(slide.image).height(800).format('webp').url() : ''}" class="w-full h-48 lg:h-93 object-cover" alt="event slide" />
               <span class="text-lg lg:text-3xl font-bold absolute right-2 top-2 md:right-6 md:top-6">${slide.date || ''}</span>
               <p class="text-lg lg:text-3xl font-bold absolute bottom-2 left-2 md:left-6 md:bottom-6">${slide.title || ''}</p>
             </div>
@@ -308,7 +308,7 @@ async function fetchSanityData() {
           if (item.image) {
             return `
               <div class="swiper-slide relative cursor-pointer merch-slide aspect-[4/5] overflow-hidden" data-index="${index}">
-                <img loading="lazy" src="${urlFor(item.image).width(600).height(750).url()}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" alt="${item.title || 'merch'}" />
+                <img loading="lazy" src="${urlFor(item.image).width(1200).height(1500).format('webp').url()}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" alt="${item.title || 'merch'}" />
                 ${item.title ? `<div class="absolute inset-0 bg-black/20 pointer-events-none"></div><p class="text-xl lg:text-3xl font-bold absolute bottom-2 lg:bottom-7 left-2 lg:left-7 right-2 lg:right-7 drop-shadow-md text-white pointer-events-none">${item.title}</p>` : ''}
               </div>
             `;
@@ -355,7 +355,7 @@ function openProjectModal(project) {
   
   galleryWrapper.innerHTML = images.map(img => `
     <div class="swiper-slide w-full h-full">
-      <img loading="lazy" src="${urlFor(img).height(800).url()}" class="w-full h-full object-cover" alt="${project.title || 'Project Image'}">
+      <img loading="lazy" src="${urlFor(img).height(1600).format('webp').url()}" class="w-full h-full object-cover" alt="${project.title || 'Project Image'}">
     </div>
   `).join('');
   
@@ -421,7 +421,7 @@ function openMerchModal(item) {
   if (galleryWrapper) {
     galleryWrapper.innerHTML = images.map(img => `
       <div class="swiper-slide w-full h-full">
-        <img loading="lazy" src="${urlFor(img).height(800).url()}" class="w-full h-full object-cover" alt="${item.title || 'Merch'}">
+        <img loading="lazy" src="${urlFor(img).height(1600).format('webp').url()}" class="w-full h-full object-cover" alt="${item.title || 'Merch'}">
       </div>
     `).join('');
   }
